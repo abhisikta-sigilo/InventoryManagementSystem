@@ -1,35 +1,32 @@
-USE InventoryManagementSystem;
-GO
-
 CREATE TABLE Customers (
-    CustomerId INT IDENTITY(1,1) PRIMARY KEY,
+    CustomerId BIGINT IDENTITY(1,1) PRIMARY KEY,
     Name VARCHAR(100) NOT NULL,
     Email VARCHAR(150) NOT NULL,
-    Phone BIGINT,
+    Phone VARCHAR(20),
 
     CreatedDate DATETIME NOT NULL DEFAULT GETDATE(),
-    ModifiedDate DATETIME NULL,
+    ModifiedDate DATETIME,
     IsDeleted BIT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE Products (
-    ProductId INT IDENTITY(1,1) PRIMARY KEY,
+    ProductId BIGINT IDENTITY(1,1) PRIMARY KEY,
     Name VARCHAR(150) NOT NULL,
     Description VARCHAR(500),
     Price DECIMAL(10,2) NOT NULL,
 
     CreatedDate DATETIME NOT NULL DEFAULT GETDATE(),
-    ModifiedDate DATETIME NULL,
+    ModifiedDate DATETIME,
     IsDeleted BIT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE Inventory (
-    InventoryId INT IDENTITY(1,1) PRIMARY KEY,
-    ProductId INT NOT NULL,
+    InventoryId BIGINT IDENTITY(1,1) PRIMARY KEY,
+    ProductId BIGINT NOT NULL,
     Quantity INT NOT NULL,
 
     CreatedDate DATETIME NOT NULL DEFAULT GETDATE(),
-    ModifiedDate DATETIME NULL,
+    ModifiedDate DATETIME,
     IsDeleted BIT NOT NULL DEFAULT 0,
 
     CONSTRAINT FK_Inventory_Product
@@ -41,20 +38,20 @@ CREATE TABLE Status (
     Description VARCHAR(100) NOT NULL,
 
     CreatedDate DATETIME NOT NULL DEFAULT GETDATE(),
-    ModifiedDate DATETIME NULL,
+    ModifiedDate DATETIME,
     IsDeleted BIT NOT NULL DEFAULT 0
 );
 
 
 CREATE TABLE Orders (
-    OrderId INT IDENTITY(1,1) PRIMARY KEY,
-    CustomerId INT NOT NULL,
+    OrderId BIGINT IDENTITY(1,1) PRIMARY KEY,
+    CustomerId BIGINT NOT NULL,
     TotalAmount DECIMAL(10,2) NOT NULL,
     OrderStatusId INT NOT NULL,
     OrderDate DATETIME NOT NULL,
 
     CreatedDate DATETIME NOT NULL DEFAULT GETDATE(),
-    ModifiedDate DATETIME NULL,
+    ModifiedDate DATETIME,
     IsDeleted BIT NOT NULL DEFAULT 0,
 
     CONSTRAINT FK_Orders_Customer
@@ -65,14 +62,14 @@ CREATE TABLE Orders (
 );
 
 CREATE TABLE OrderItems (
-    OrderItemId INT IDENTITY(1,1) PRIMARY KEY,
-    OrderId INT NOT NULL,
-    ProductId INT NOT NULL,
+    OrderItemId BIGINT IDENTITY(1,1) PRIMARY KEY,
+    OrderId BIGINT NOT NULL,
+    ProductId BIGINT NOT NULL,
     Quantity INT NOT NULL,
     TotalPrice DECIMAL(10,2) NOT NULL,
 
     CreatedDate DATETIME NOT NULL DEFAULT GETDATE(),
-    ModifiedDate DATETIME NULL,
+    ModifiedDate DATETIME,
     IsDeleted BIT NOT NULL DEFAULT 0,
 
     CONSTRAINT FK_OrderItems_Order
