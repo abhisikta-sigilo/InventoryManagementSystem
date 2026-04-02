@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data;
 
-namespace InventoryManagementSystem.Data
+namespace InventoryManagementSystem.DL.DbContext
 {
     public class DapperContext
     {
