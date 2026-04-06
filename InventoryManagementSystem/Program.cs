@@ -1,3 +1,10 @@
+using InventoryManagementSystem.BL.Services.Abstractions;
+using InventoryManagementSystem.BL.Services.Implementations;
+using InventoryManagementSystem.DL.DbContext;
+using InventoryManagementSystem.DL.Repositories.Abstractions;
+using InventoryManagementSystem.DL.Repositories.Implementations;
+using Microsoft.AspNetCore.Diagnostics;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,7 +14,33 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton<DapperContext>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+
+builder.Services.AddAutoMapper(
+    cfg => { },
+    AppDomain.CurrentDomain.GetAssemblies()
+);
+
 var app = builder.Build();
+
+app.UseExceptionHandler(appError =>
+{
+    appError.Run(async context =>
+    {
+        var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+
+        if (exception is KeyNotFoundException)
+        {
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+            await context.Response.WriteAsync(exception.Message);
+            return;
+        }
+
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+    });
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
