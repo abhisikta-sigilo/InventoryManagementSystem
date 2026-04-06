@@ -31,6 +31,7 @@
             UPDATE Customers
             SET IsDeleted = 1,
                 ModifiedDate = GETUTCDATE()
-            WHERE CustomerId = @CustomerId";
+            WHERE CustomerId = @CustomerId AND
+            IsDeleted = 0";
     }
 }
