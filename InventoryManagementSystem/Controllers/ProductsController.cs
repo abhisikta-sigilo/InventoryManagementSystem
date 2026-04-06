@@ -9,6 +9,9 @@ namespace InventoryManagementSystem.Controllers
     public class ProductsController(IProductService productService) : ControllerBase
     {
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<ProductResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
         public async Task<ActionResult<IEnumerable<ProductResponseDto>>> GetProducts() 
         {
             IEnumerable<ProductResponseDto> productResponseDtos = await productService.GetProducts();
@@ -16,7 +19,10 @@ namespace InventoryManagementSystem.Controllers
         }
 
         [HttpGet("{productId}")]
-        public async Task<ActionResult<ProductResponseDto>> GetProductById(
+        [ProducesResponseType(typeof(ProductResponseDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+        public async Task<ActionResult> GetProductById(
             [FromRoute] long productId)
         {
             ProductResponseDto productResponseDto = await productService.GetProductById(productId);
