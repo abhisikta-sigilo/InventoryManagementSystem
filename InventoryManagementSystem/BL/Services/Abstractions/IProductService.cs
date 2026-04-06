@@ -8,6 +8,6 @@ namespace InventoryManagementSystem.BL.Services.Abstractions
 
         Task<ProductResponseDto> GetProductById(long productId);
 
-        Task CreateProduct(CreateProductRequestDto createProductRequestDto);
+        Task CreateProduct(ProductCreateRequestDto productCreateRequestDto);
     }
 }

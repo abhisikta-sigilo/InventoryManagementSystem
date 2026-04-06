@@ -34,9 +34,9 @@ namespace InventoryManagementSystem.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
-        public async Task<ActionResult> CreateProduct(CreateProductRequestDto createProductRequestDto)
+        public async Task<ActionResult> CreateProduct(ProductCreateRequestDto productCreateRequestDto)
         {
-            await productService.CreateProduct(createProductRequestDto);
+            await productService.CreateProduct(productCreateRequestDto);
 
             return Ok();
         }

@@ -1,6 +1,6 @@
 ﻿namespace InventoryManagementSystem.Shared.DTOs.Product
 {
-    public class CreateProductRequestDto
+    public class ProductCreateRequestDto
     {
         public string? Name { get; set; }
 
