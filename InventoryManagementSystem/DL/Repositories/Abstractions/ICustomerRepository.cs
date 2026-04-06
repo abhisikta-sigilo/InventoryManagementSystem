@@ -4,13 +4,13 @@ namespace InventoryManagementSystem.DL.Repositories.Abstractions
 {
     public interface ICustomerRepository
     {
-        Task<IEnumerable<Customer>> GetCustomers();
+        Task<IEnumerable<CustomerEntity>> GetCustomers();
 
-        Task<Customer?> GetCustomerById(long customerId);
+        Task<CustomerEntity?> GetCustomerById(long customerId);
 
-        Task<long> CreateCustomer(Customer customer);
+        Task<long> CreateCustomer(CustomerEntity customerEntity);
 
-        Task<bool> UpdateCustomer(Customer customer);
+        Task<bool> UpdateCustomer(CustomerEntity customerEntity);
 
         Task<bool> DeleteCustomer(long customerId);
     }

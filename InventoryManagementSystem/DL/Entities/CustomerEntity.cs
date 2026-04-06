@@ -1,6 +1,6 @@
 ﻿namespace InventoryManagementSystem.DL.Entities
 {
-    public class Customer : BaseEntity
+    public class CustomerEntity : BaseEntity
     {
         public long CustomerId { get; set; }
 

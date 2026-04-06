@@ -13,34 +13,34 @@ namespace InventoryManagementSystem.BL.Services.Implementations
     {
         public async Task<IEnumerable<CustomerResponseDto>> GetCustomers()
         {
-            IEnumerable<Customer> customers = await customerRepository.GetCustomers();
+            IEnumerable<CustomerEntity> customerEntities = await customerRepository.GetCustomers();
 
-            return mapper.Map<IEnumerable<CustomerResponseDto>>(customers);
+            return mapper.Map<IEnumerable<CustomerResponseDto>>(customerEntities);
         }
 
         public async Task<CustomerResponseDto> GetCustomerById(long customerId)
         {
-            Customer? customer = await customerRepository.GetCustomerById(customerId);
+            CustomerEntity? customerEntity = await customerRepository.GetCustomerById(customerId);
 
-            if (customer == null)
+            if (customerEntity == null)
                 throw new KeyNotFoundException("Customer not found");
 
-            return mapper.Map<CustomerResponseDto>(customer);
+            return mapper.Map<CustomerResponseDto>(customerEntity);
         }
 
         public async Task CreateCustomer(CreateCustomerRequestDto createCustomerDto)
         {
-            Customer customer = mapper.Map<Customer>(createCustomerDto);
+            CustomerEntity customerEntity = mapper.Map<CustomerEntity>(createCustomerDto);
 
-            await customerRepository.CreateCustomer(customer);
+            await customerRepository.CreateCustomer(customerEntity);
         }
 
         public async Task UpdateCustomer(long customerId, UpdateCustomerRequestDto updateCustomerDto)
         {
-            Customer customer = mapper.Map<Customer>(updateCustomerDto);
-            customer.CustomerId = customerId;
+            CustomerEntity customerEntity = mapper.Map<CustomerEntity>(updateCustomerDto);
+            customerEntity.CustomerId = customerId;
 
-            bool updated = await customerRepository.UpdateCustomer(customer);
+            bool updated = await customerRepository.UpdateCustomer(customerEntity);
 
             if (!updated)
                 throw new KeyNotFoundException("Customer not found");
@@ -48,9 +48,9 @@ namespace InventoryManagementSystem.BL.Services.Implementations
 
         public async Task DeleteCustomer(long customerId)
         {
-            Customer? customer = await customerRepository.GetCustomerById(customerId);
+            CustomerEntity? customerEntity = await customerRepository.GetCustomerById(customerId);
 
-            if (customer == null)
+            if (customerEntity == null)
                 throw new KeyNotFoundException("Customer not found");
 
             await customerRepository.DeleteCustomer(customerId);

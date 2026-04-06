@@ -9,24 +9,24 @@ namespace InventoryManagementSystem.DL.Repositories.Implementations
 {
     public class CustomerRepository(DapperContext context) : ICustomerRepository
     {
-        public async Task<IEnumerable<Customer>> GetCustomers()
+        public async Task<IEnumerable<CustomerEntity>> GetCustomers()
         {
             using IDbConnection connection = context.CreateConnection();
 
-            return await connection.QueryAsync<Customer>(
+            return await connection.QueryAsync<CustomerEntity>(
                 CustomerQueries.GetCustomers);
         }
 
-        public async Task<Customer?> GetCustomerById(long customerId)
+        public async Task<CustomerEntity?> GetCustomerById(long customerId)
         {
             using IDbConnection connection = context.CreateConnection();
 
-            return await connection.QueryFirstOrDefaultAsync<Customer>(
+            return await connection.QueryFirstOrDefaultAsync<CustomerEntity>(
                 CustomerQueries.GetCustomerById,
                 new { CustomerId = customerId });
         }
 
-        public async Task<long> CreateCustomer(Customer customer)
+        public async Task<long> CreateCustomer(CustomerEntity customer)
         {
             using IDbConnection connection = context.CreateConnection();
 
@@ -35,11 +35,11 @@ namespace InventoryManagementSystem.DL.Repositories.Implementations
                 customer);
         }
 
-        public async Task<bool> UpdateCustomer(Customer customer)
+        public async Task<bool> UpdateCustomer(CustomerEntity customerEntity)
         {
             using IDbConnection connection = context.CreateConnection();
 
-            int rows = await connection.ExecuteAsync(CustomerQueries.UpdateCustomer, customer);
+            int rows = await connection.ExecuteAsync(CustomerQueries.UpdateCustomer, customerEntity);
 
             return rows > 0;
         }
