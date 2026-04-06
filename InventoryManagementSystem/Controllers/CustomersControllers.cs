@@ -17,7 +17,8 @@ namespace OrderManagementSystem.Controllers
         }
 
         [HttpGet("{customerId}")]
-        public async Task<IActionResult> GetCustomerById(long customerId)
+        public async Task<IActionResult> GetCustomerById(
+            [FromRoute] long customerId)
         {
             CustomerResponseDto? customerResponseDto = await customerService.GetCustomerById(customerId);
 
@@ -42,7 +43,7 @@ namespace OrderManagementSystem.Controllers
 
         [HttpPut("{customerId}")]
         public async Task<IActionResult> UpdateCustomer(
-            long customerId,
+            [FromRoute] long customerId,
             UpdateCustomerRequestDto updateCustomerDto)
         {
             bool updated = await customerService.UpdateCustomer(customerId, updateCustomerDto);
@@ -54,7 +55,8 @@ namespace OrderManagementSystem.Controllers
         }
 
         [HttpDelete("{customerId}")]
-        public async Task<IActionResult> DeleteCustomer(long customerId)
+        public async Task<IActionResult> DeleteCustomer(
+            [FromRoute] long customerId)
         {
             bool deleted = await customerService.DeleteCustomer(customerId);
 
