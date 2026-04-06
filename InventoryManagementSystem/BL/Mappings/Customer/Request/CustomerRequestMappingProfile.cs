@@ -2,13 +2,12 @@
 using InventoryManagementSystem.DL.Entities;
 using InventoryManagementSystem.Shared.DTOs;
 
-namespace InventoryManagementSystem.BL.Mappings
+namespace InventoryManagementSystem.BL.Mappings.Customer.Request
 {
-    public class MappingProfile : Profile
+    public class CustomerRequestMappingProfile : Profile
     {
-        public MappingProfile()
+        public CustomerRequestMappingProfile()
         {
-            CreateMap<CustomerEntity, CustomerResponseDto>();
             CreateMap<CreateCustomerRequestDto, CustomerEntity>();
             CreateMap<UpdateCustomerRequestDto, CustomerEntity>();
         }
