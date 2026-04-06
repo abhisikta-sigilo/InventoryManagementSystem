@@ -6,8 +6,8 @@ namespace InventoryManagementSystem.BL.Services.Abstractions
     {
         Task<IEnumerable<CustomerResponseDto>> GetCustomers();
         Task<CustomerResponseDto?> GetCustomerById(long customerId);
-        Task<long> CreateCustomer(CreateCustomerDto createCustomerDto);
-        Task<bool> UpdateCustomer(long customerId, UpdateCustomerDto updateCustomerDto);
+        Task<long> CreateCustomer(CreateCustomerRequestDto createCustomerDto);
+        Task<bool> UpdateCustomer(long customerId, UpdateCustomerRequestDto updateCustomerDto);
         Task<bool> DeleteCustomer(long customerId);
     }
 }

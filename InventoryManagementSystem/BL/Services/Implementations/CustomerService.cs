@@ -11,7 +11,7 @@ namespace InventoryManagementSystem.BL.Services.Implementations
         IMapper mapper
     ) : ICustomerService
     {
-        public async Task<long> CreateCustomer(CreateCustomerDto createCustomerDto)
+        public async Task<long> CreateCustomer(CreateCustomerRequestDto createCustomerDto)
         {
             Customer customer = mapper.Map<Customer>(createCustomerDto);
 
@@ -35,7 +35,7 @@ namespace InventoryManagementSystem.BL.Services.Implementations
             return mapper.Map<CustomerResponseDto>(customer);
         }
 
-        public async Task<bool> UpdateCustomer(long customerId, UpdateCustomerDto updateCustomerDto)
+        public async Task<bool> UpdateCustomer(long customerId, UpdateCustomerRequestDto updateCustomerDto)
         {
             Customer customer = mapper.Map<Customer>(updateCustomerDto);
 

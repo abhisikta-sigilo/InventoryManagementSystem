@@ -1,6 +1,6 @@
 ﻿namespace InventoryManagementSystem.Shared.DTOs
 {
-    public class CreateCustomerDto
+    public class UpdateCustomerRequestDto
     {
         public required string Name { get; set; }
         public required string Email { get; set; }

@@ -28,7 +28,7 @@ namespace OrderManagementSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCustomer(CreateCustomerDto createCustomerDto)
+        public async Task<IActionResult> CreateCustomer(CreateCustomerRequestDto createCustomerDto)
         {
             long customerId = await customerService.CreateCustomer(createCustomerDto);
 
@@ -43,7 +43,7 @@ namespace OrderManagementSystem.Controllers
         [HttpPut("{customerId}")]
         public async Task<IActionResult> UpdateCustomer(
             long customerId,
-            UpdateCustomerDto updateCustomerDto)
+            UpdateCustomerRequestDto updateCustomerDto)
         {
             bool updated = await customerService.UpdateCustomer(customerId, updateCustomerDto);
 

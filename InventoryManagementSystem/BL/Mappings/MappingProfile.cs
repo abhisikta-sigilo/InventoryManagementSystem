@@ -9,8 +9,8 @@ namespace InventoryManagementSystem.BL.Mappings
         public MappingProfile()
         {
             CreateMap<Customer, CustomerResponseDto>();
-            CreateMap<CreateCustomerDto, Customer>();
-            CreateMap<UpdateCustomerDto, Customer>();
+            CreateMap<CreateCustomerRequestDto, Customer>();
+            CreateMap<UpdateCustomerRequestDto, Customer>();
         }
     }
 }
