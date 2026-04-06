@@ -47,10 +47,12 @@ namespace InventoryManagementSystem.BL.Services.Implementations
 
         public async Task DeleteCustomer(long customerId)
         {
-            bool deleted = await customerRepository.DeleteCustomer(customerId);
+            Customer? customer = await customerRepository.GetCustomerById(customerId);
 
-            if (!deleted)
+            if (customer == null)
                 throw new KeyNotFoundException("Customer not found");
+
+            await customerRepository.DeleteCustomer(customerId);
         }
     }
 }
