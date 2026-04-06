@@ -35,19 +35,11 @@ namespace InventoryManagementSystem.DL.Repositories.Implementations
                 customer);
         }
 
-        public async Task<bool> UpdateCustomer(long customerId, Customer customer)
+        public async Task<bool> UpdateCustomer(Customer customer)
         {
             using IDbConnection connection = context.CreateConnection();
 
-            int rows = await connection.ExecuteAsync(
-                CustomerQueries.UpdateCustomer,
-                new
-                {
-                    CustomerId = customerId,
-                    customer.Name,
-                    customer.Email,
-                    customer.Phone
-                });
+            int rows = await connection.ExecuteAsync(CustomerQueries.UpdateCustomer, customer);
 
             return rows > 0;
         }

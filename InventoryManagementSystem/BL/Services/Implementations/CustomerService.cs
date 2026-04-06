@@ -38,8 +38,9 @@ namespace InventoryManagementSystem.BL.Services.Implementations
         public async Task UpdateCustomer(long customerId, UpdateCustomerRequestDto updateCustomerDto)
         {
             Customer customer = mapper.Map<Customer>(updateCustomerDto);
+            customer.CustomerId = customerId;
 
-            bool updated = await customerRepository.UpdateCustomer(customerId, customer);
+            bool updated = await customerRepository.UpdateCustomer(customer);
 
             if (!updated)
                 throw new KeyNotFoundException("Customer not found");
