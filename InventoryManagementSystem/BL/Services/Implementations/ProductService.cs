@@ -27,7 +27,6 @@ namespace InventoryManagementSystem.BL.Services.Implementations
                 throw new KeyNotFoundException("Product not found");
             }
 
-            // <to datatype>(from variable)
             return mapper.Map<ProductResponseDto>(productEntity);
         }
     }

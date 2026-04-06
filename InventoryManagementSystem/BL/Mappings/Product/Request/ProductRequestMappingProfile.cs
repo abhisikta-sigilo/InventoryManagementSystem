@@ -8,7 +8,6 @@ namespace InventoryManagementSystem.BL.Mappings.Product.Request
     {
         public ProductRequestMappingProfile()
         {
-            // <from, to>
             CreateMap<ProductEntity, ProductResponseDto>();
         }
     }
