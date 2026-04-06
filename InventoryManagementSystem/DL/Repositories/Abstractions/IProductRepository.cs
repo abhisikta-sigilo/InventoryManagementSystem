@@ -7,5 +7,7 @@ namespace InventoryManagementSystem.DL.Repositories.Abstractions
         Task<IEnumerable<ProductEntity>> GetProducts();
 
         Task<ProductEntity?> GetProductById(long productId);
+
+        Task<long> CreateProduct(ProductEntity product);
     }
 }
