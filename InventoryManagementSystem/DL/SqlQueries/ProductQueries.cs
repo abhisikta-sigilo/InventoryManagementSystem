@@ -15,7 +15,7 @@
 
         public const string CreateProduct = @"
             INSERT INTO Products (Name, Description, Price)
-            VALUES (@Name, @Description, @Price)
-            SELECT CAST(SCOPE_IDENTITY() as BIGINT);";
+            OUTPUT INSERTED.ProductId
+            VALUES (@Name, @Description, @Price);";
     }
 }
