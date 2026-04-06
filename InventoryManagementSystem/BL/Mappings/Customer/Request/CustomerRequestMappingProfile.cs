@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using InventoryManagementSystem.DL.Entities;
-using InventoryManagementSystem.Shared.DTOs;
+using InventoryManagementSystem.Shared.DTOs.Customer;
 
 namespace InventoryManagementSystem.BL.Mappings.Customer.Request
 {
