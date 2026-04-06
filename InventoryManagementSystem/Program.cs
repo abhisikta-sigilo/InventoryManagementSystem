@@ -3,6 +3,7 @@ using InventoryManagementSystem.BL.Services.Implementations;
 using InventoryManagementSystem.DL.DbContext;
 using InventoryManagementSystem.DL.Repositories.Abstractions;
 using InventoryManagementSystem.DL.Repositories.Implementations;
+using Microsoft.AspNetCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,23 @@ builder.Services.AddAutoMapper(
 
 
 var app = builder.Build();
+
+app.UseExceptionHandler(appError =>
+{
+    appError.Run(async context =>
+    {
+        var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+
+        if (exception is KeyNotFoundException)
+        {
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+            await context.Response.WriteAsync(exception.Message);
+            return;
+        }
+
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+    });
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
