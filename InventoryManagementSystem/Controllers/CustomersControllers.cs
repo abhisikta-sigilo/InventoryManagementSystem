@@ -20,10 +20,7 @@ namespace OrderManagementSystem.Controllers
         public async Task<IActionResult> GetCustomerById(
             [FromRoute] long customerId)
         {
-            CustomerResponseDto? customerResponseDto = await customerService.GetCustomerById(customerId);
-
-            if (customerResponseDto == null)
-                return NotFound();
+            CustomerResponseDto customerResponseDto = await customerService.GetCustomerById(customerId);
 
             return Ok(customerResponseDto);
         }
@@ -46,10 +43,7 @@ namespace OrderManagementSystem.Controllers
             [FromRoute] long customerId,
             UpdateCustomerRequestDto updateCustomerDto)
         {
-            bool updated = await customerService.UpdateCustomer(customerId, updateCustomerDto);
-
-            if (!updated)
-                return NotFound();
+            await customerService.UpdateCustomer(customerId, updateCustomerDto);
 
             return NoContent();
         }
@@ -58,10 +52,7 @@ namespace OrderManagementSystem.Controllers
         public async Task<IActionResult> DeleteCustomer(
             [FromRoute] long customerId)
         {
-            bool deleted = await customerService.DeleteCustomer(customerId);
-
-            if (!deleted)
-                return NotFound();
+            await customerService.DeleteCustomer(customerId);
 
             return NoContent();
         }

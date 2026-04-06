@@ -25,26 +25,32 @@ namespace InventoryManagementSystem.BL.Services.Implementations
             return mapper.Map<IEnumerable<CustomerResponseDto>>(customers);
         }
 
-        public async Task<CustomerResponseDto?> GetCustomerById(long customerId)
+        public async Task<CustomerResponseDto> GetCustomerById(long customerId)
         {
             Customer? customer = await customerRepository.GetCustomerById(customerId);
 
             if (customer == null)
-                return null;
+                throw new KeyNotFoundException("Customer not found");
 
             return mapper.Map<CustomerResponseDto>(customer);
         }
 
-        public async Task<bool> UpdateCustomer(long customerId, UpdateCustomerRequestDto updateCustomerDto)
+        public async Task UpdateCustomer(long customerId, UpdateCustomerRequestDto updateCustomerDto)
         {
             Customer customer = mapper.Map<Customer>(updateCustomerDto);
 
-            return await customerRepository.UpdateCustomer(customerId, customer);
+            bool updated = await customerRepository.UpdateCustomer(customerId, customer);
+
+            if (!updated)
+                throw new KeyNotFoundException("Customer not found");
         }
 
-        public async Task<bool> DeleteCustomer(long customerId)
+        public async Task DeleteCustomer(long customerId)
         {
-            return await customerRepository.DeleteCustomer(customerId);
+            bool deleted = await customerRepository.DeleteCustomer(customerId);
+
+            if (!deleted)
+                throw new KeyNotFoundException("Customer not found");
         }
     }
 }
