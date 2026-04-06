@@ -15,20 +15,22 @@
         public const string GetCustomerById = @"
             SELECT CustomerId, Name, Email, Phone, CreatedDate, ModifiedDate, IsDeleted
             FROM Customers
-            WHERE CustomerId = @CustomerId AND IsDeleted = 0";
+            WHERE CustomerId = @CustomerId AND 
+            IsDeleted = 0";
 
         public const string UpdateCustomer = @"
             UPDATE Customers
             SET Name = @Name,
                 Email = @Email,
                 Phone = @Phone,
-                ModifiedDate = GETDATE()
-            WHERE CustomerId = @CustomerId AND IsDeleted = 0";
+                ModifiedDate = GETUTCDATE()
+            WHERE CustomerId = @CustomerId AND 
+            IsDeleted = 0";
 
         public const string SoftDeleteCustomer = @"
             UPDATE Customers
             SET IsDeleted = 1,
-                ModifiedDate = GETDATE()
+                ModifiedDate = GETUTCDATE()
             WHERE CustomerId = @CustomerId";
     }
 }
