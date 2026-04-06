@@ -1,5 +1,4 @@
 ﻿using InventoryManagementSystem.BL.Services.Abstractions;
-using InventoryManagementSystem.DL.Entities;
 using InventoryManagementSystem.Shared.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,16 +25,12 @@ namespace OrderManagementSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCustomer(CreateCustomerRequestDto createCustomerDto)
+        public async Task<IActionResult> CreateCustomer(
+            CreateCustomerRequestDto createCustomerDto)
         {
-            long customerId = await customerService.CreateCustomer(createCustomerDto);
+            await customerService.CreateCustomer(createCustomerDto);
 
-            CustomerResponseDto? customerResponseDto = await customerService.GetCustomerById(customerId);
-
-            return CreatedAtAction(
-                nameof(GetCustomerById),
-                new { customerId },
-                customerResponseDto);
+            return Ok();
         }
 
         [HttpPut("{customerId}")]

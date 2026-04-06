@@ -11,13 +11,6 @@ namespace InventoryManagementSystem.BL.Services.Implementations
         IMapper mapper
     ) : ICustomerService
     {
-        public async Task<long> CreateCustomer(CreateCustomerRequestDto createCustomerDto)
-        {
-            Customer customer = mapper.Map<Customer>(createCustomerDto);
-
-            return await customerRepository.CreateCustomer(customer);
-        }
-
         public async Task<IEnumerable<CustomerResponseDto>> GetCustomers()
         {
             IEnumerable<Customer> customers = await customerRepository.GetCustomers();
@@ -33,6 +26,13 @@ namespace InventoryManagementSystem.BL.Services.Implementations
                 throw new KeyNotFoundException("Customer not found");
 
             return mapper.Map<CustomerResponseDto>(customer);
+        }
+
+        public async Task CreateCustomer(CreateCustomerRequestDto createCustomerDto)
+        {
+            Customer customer = mapper.Map<Customer>(createCustomerDto);
+
+            await customerRepository.CreateCustomer(customer);
         }
 
         public async Task UpdateCustomer(long customerId, UpdateCustomerRequestDto updateCustomerDto)
