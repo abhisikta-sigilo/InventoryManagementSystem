@@ -18,5 +18,17 @@ namespace InventoryManagementSystem.BL.Services.Implementations
             return mapper.Map<IEnumerable<ProductResponseDto>>(productEntities);
         }
 
+        public async Task<ProductResponseDto> GetProductById(long productId)
+        {
+            ProductEntity? productEntity = await productRepository.GetProductById(productId);
+
+            if (productEntity == null)
+            {
+                throw new KeyNotFoundException("Product not found");
+            }
+
+            // <to datatype>(from variable)
+            return mapper.Map<ProductResponseDto>(productEntity);
+        }
     }
 }

@@ -19,5 +19,17 @@ namespace InventoryManagementSystem.DL.Repositories.Implementations
 
             return products;
         }
+
+        public async Task<ProductEntity?> GetProductById(long productId)
+        {
+            using IDbConnection connection = context.CreateConnection();
+
+            ProductEntity? productEntity = 
+                await connection.QueryFirstOrDefaultAsync<ProductEntity>(
+                    ProductQueries.GetProductById,
+                    new { ProductId = productId});
+
+            return productEntity;
+        }
     }
 }
