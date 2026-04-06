@@ -1,5 +1,5 @@
 ﻿using InventoryManagementSystem.BL.Services.Abstractions;
-using InventoryManagementSystem.Shared.DTOs;
+using InventoryManagementSystem.Shared.DTOs.Customer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace OrderManagementSystem.Controllers

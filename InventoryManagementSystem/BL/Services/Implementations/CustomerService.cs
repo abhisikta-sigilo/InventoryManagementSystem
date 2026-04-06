@@ -2,7 +2,7 @@
 using InventoryManagementSystem.BL.Services.Abstractions;
 using InventoryManagementSystem.DL.Entities;
 using InventoryManagementSystem.DL.Repositories.Abstractions;
-using InventoryManagementSystem.Shared.DTOs;
+using InventoryManagementSystem.Shared.DTOs.Customer;
 
 namespace InventoryManagementSystem.BL.Services.Implementations
 {

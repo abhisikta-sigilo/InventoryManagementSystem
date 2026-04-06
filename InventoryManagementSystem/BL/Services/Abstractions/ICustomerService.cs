@@ -1,4 +1,4 @@
-﻿using InventoryManagementSystem.Shared.DTOs;
+﻿using InventoryManagementSystem.Shared.DTOs.Customer;
 
 namespace InventoryManagementSystem.BL.Services.Abstractions
 {
