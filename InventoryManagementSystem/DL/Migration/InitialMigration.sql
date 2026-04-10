@@ -14,7 +14,7 @@ CREATE TABLE Customers (
 
 CREATE TABLE Products (
     ProductId BIGINT IDENTITY(1,1) PRIMARY KEY,
-    Name VARCHAR(150) NOT NULL,
+    ProductName VARCHAR(150) NOT NULL,
     Description VARCHAR(500),
     Price DECIMAL(10,2) NOT NULL,
 
