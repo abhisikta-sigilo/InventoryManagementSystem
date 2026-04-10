@@ -29,5 +29,12 @@ namespace InventoryManagementSystem.BL.Services.Implementations
 
             return mapper.Map<ProductResponseDto>(productEntity);
         }
+
+        public async Task CreateProduct(ProductCreateRequestDto productCreateRequestDto)
+        {
+            ProductEntity productEntity = mapper.Map<ProductEntity>(productCreateRequestDto);
+
+            await productRepository.CreateProduct(productEntity);
+        }
     }
 }

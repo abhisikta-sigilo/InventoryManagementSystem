@@ -31,5 +31,14 @@ namespace InventoryManagementSystem.DL.Repositories.Implementations
 
             return productEntity;
         }
+
+        public async Task<long> CreateProduct(ProductEntity productEntity)
+        {
+            using IDbConnection connection = context.CreateConnection();
+
+            return await connection.ExecuteScalarAsync<long>(
+                ProductQueries.CreateProduct,
+                productEntity);
+        }
     }
 }

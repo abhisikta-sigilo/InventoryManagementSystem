@@ -7,5 +7,7 @@ namespace InventoryManagementSystem.BL.Services.Abstractions
         Task<IEnumerable<ProductResponseDto>> GetProducts();
 
         Task<ProductResponseDto> GetProductById(long productId);
+
+        Task CreateProduct(ProductCreateRequestDto productCreateRequestDto);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using InventoryManagementSystem.BL.Services.Abstractions;
 using InventoryManagementSystem.Shared.DTOs.Product;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryManagementSystem.Controllers
@@ -27,6 +28,17 @@ namespace InventoryManagementSystem.Controllers
         {
             ProductResponseDto productResponseDto = await productService.GetProductById(productId);
             return Ok(productResponseDto);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+        public async Task<ActionResult> CreateProduct(ProductCreateRequestDto productCreateRequestDto)
+        {
+            await productService.CreateProduct(productCreateRequestDto);
+
+            return Ok();
         }
     }
 }

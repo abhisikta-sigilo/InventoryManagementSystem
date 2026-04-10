@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="BL\Mappings\Product\Response\" />
     <Folder Include="DL\Migration\" />
   </ItemGroup>
 
