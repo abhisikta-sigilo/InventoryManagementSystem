@@ -11,5 +11,7 @@ namespace InventoryManagementSystem.DL.Repositories.Abstractions
         Task<long> CreateInventory(InventoryEntity inventoryEntity);
 
         Task<bool> InventoryExistsByProductId(long productId);
+
+        Task UpdateInventory(InventoryEntity inventoryEntity);
     }
 }

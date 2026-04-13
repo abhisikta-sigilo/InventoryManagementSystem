@@ -40,5 +40,19 @@ namespace InventoryManagementSystem.Controllers
 
             return Ok(inventoryResponseDto);
         }
+
+        [HttpPut("{inventoryId}")]
+        [ProducesResponseType(typeof(InventoryResponseDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> UpdateInventory(
+            long inventoryId,
+            InventoryUpdateRequestDto inventoryUpdateRequestDto)
+        {
+            InventoryResponseDto inventoryResponseDto = await inventoryService.UpdateInventory(
+                inventoryId,
+                inventoryUpdateRequestDto);
+
+            return Ok(inventoryResponseDto);
+        }
     }
 }

@@ -53,5 +53,14 @@ namespace InventoryManagementSystem.DL.Repositories.Implementations
 
             return count > 0;
         }
+
+        public async Task UpdateInventory(InventoryEntity inventoryEntity)
+        {
+            using IDbConnection connection = context.CreateConnection();
+
+            await connection.ExecuteAsync(
+                InventoryQueries.UpdateInventory,
+                inventoryEntity);
+        }
     }
 }

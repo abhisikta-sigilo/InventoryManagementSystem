@@ -2,9 +2,7 @@
 using InventoryManagementSystem.BL.Services.Abstractions;
 using InventoryManagementSystem.DL.Entities;
 using InventoryManagementSystem.DL.Repositories.Abstractions;
-using InventoryManagementSystem.DL.Repositories.Implementations;
 using InventoryManagementSystem.Shared.DTOs.Inventory;
-using InventoryManagementSystem.Shared.DTOs.Product;
 
 namespace InventoryManagementSystem.BL.Services.Implementations
 {
@@ -35,7 +33,6 @@ namespace InventoryManagementSystem.BL.Services.Implementations
 
         public async Task<InventoryResponseDto> CreateInventory(InventoryCreateRequestDto inventoryCreateRequestDto)
         {
-
             await ValidateInventory(
                 inventoryCreateRequestDto.ProductId,
                 inventoryCreateRequestDto.Quantity);
@@ -46,7 +43,32 @@ namespace InventoryManagementSystem.BL.Services.Implementations
 
             inventoryEntity.InventoryId = inventoryId;
 
-            InventoryResponseDto inventoryResponseDto = mapper.Map<InventoryResponseDto>( inventoryEntity );
+            InventoryResponseDto inventoryResponseDto = mapper.Map<InventoryResponseDto>(
+                inventoryEntity);
+
+            return inventoryResponseDto;
+        }
+
+        public async Task<InventoryResponseDto> UpdateInventory(
+            long inventoryId,
+            InventoryUpdateRequestDto inventoryUpdateRequestDto)
+        {
+            await ValidateInventory(
+                inventoryUpdateRequestDto.ProductId,
+                inventoryUpdateRequestDto.Quantity);
+
+            InventoryEntity? inventoryEntity = await inventoryRepository.GetInventoryById(inventoryId);
+
+            if (inventoryEntity == null)
+                throw new Exception("Inventory not found");
+
+            inventoryEntity.ProductId = inventoryUpdateRequestDto.ProductId;
+            inventoryEntity.Quantity = inventoryUpdateRequestDto.Quantity;
+
+            await inventoryRepository.UpdateInventory(inventoryEntity);
+
+            InventoryResponseDto inventoryResponseDto = mapper.Map<InventoryResponseDto>(
+                inventoryEntity);
 
             return inventoryResponseDto;
         }

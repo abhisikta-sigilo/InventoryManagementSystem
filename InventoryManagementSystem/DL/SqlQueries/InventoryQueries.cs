@@ -24,5 +24,14 @@
             FROM Inventory
             WHERE ProductId = @ProductId
             AND IsDeleted = 0";
+
+        public const string UpdateInventory = @"
+            UPDATE Inventory
+            SET
+                ProductId = @ProductId,
+                Quantity = @Quantity,
+                ModifiedDate = GETUTCDATE()
+            WHERE InventoryId = @InventoryId
+            AND IsDeleted = 0";
     }
 }
