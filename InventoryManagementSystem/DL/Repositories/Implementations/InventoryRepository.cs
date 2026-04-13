@@ -9,6 +9,29 @@ namespace InventoryManagementSystem.DL.Repositories.Implementations
 {
     public class InventoryRepository(DapperContext context) : IInventoryRepository
     {
+
+        public async Task<IEnumerable<InventoryEntity>> GetInventories()
+        {
+            using IDbConnection connection = context.CreateConnection();
+
+            IEnumerable<InventoryEntity> inventoryEntities =
+                await connection.QueryAsync<InventoryEntity>(InventoryQueries.GetInventories);
+
+            return inventoryEntities;
+        }
+
+        public async Task<InventoryEntity?> GetInventoryById(long inventoryId)
+        {
+            using IDbConnection connection = context.CreateConnection();
+
+            InventoryEntity? inventoryEntity =
+                await connection.QueryFirstOrDefaultAsync<InventoryEntity>(
+                    InventoryQueries.GetInventoryById,
+                    new { InventoryId = inventoryId });
+
+            return inventoryEntity;
+        }
+
         public async Task<long> CreateInventory(InventoryEntity inventoryEntity)
         {
             using IDbConnection connection = context.CreateConnection();

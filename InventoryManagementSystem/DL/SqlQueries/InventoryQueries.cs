@@ -2,6 +2,18 @@
 {
     public class InventoryQueries
     {
+
+        public const string GetInventoryById = @"
+            SELECT InventoryId, ProductId, Quantity
+            FROM Inventory
+            WHERE InventoryId = @InventoryId
+            AND IsDeleted = 0;";
+
+        public const string GetInventories = @"
+            SELECT InventoryId, ProductId, Quantity
+            FROM Inventory
+            WHERE IsDeleted = 0;";
+
         public const string CreateInventory = @"
             INSERT INTO Inventory (ProductId, Quantity)
             OUTPUT INSERTED.InventoryId

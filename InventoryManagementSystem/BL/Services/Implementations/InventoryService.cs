@@ -4,6 +4,7 @@ using InventoryManagementSystem.DL.Entities;
 using InventoryManagementSystem.DL.Repositories.Abstractions;
 using InventoryManagementSystem.DL.Repositories.Implementations;
 using InventoryManagementSystem.Shared.DTOs.Inventory;
+using InventoryManagementSystem.Shared.DTOs.Product;
 
 namespace InventoryManagementSystem.BL.Services.Implementations
 {
@@ -13,6 +14,25 @@ namespace InventoryManagementSystem.BL.Services.Implementations
         IMapper mapper
     ) : IInventoryService
     {
+        public async Task<IEnumerable<InventoryResponseDto>> GetInventories()
+        {
+            IEnumerable<InventoryEntity> inventroyEntities = await inventoryRepository.GetInventories();
+
+            return mapper.Map<IEnumerable<InventoryResponseDto>>(inventroyEntities);
+        }
+
+        public async Task<InventoryResponseDto> GetInventoryById(long inventoryId)
+        {
+            InventoryEntity? inventoryEntity = await inventoryRepository.GetInventoryById(inventoryId);
+
+            if (inventoryEntity == null)
+            {
+                throw new KeyNotFoundException("Inventory not found");
+            }
+
+            return mapper.Map<InventoryResponseDto>(inventoryEntity);
+        }
+
         public async Task<InventoryResponseDto> CreateInventory(InventoryCreateRequestDto inventoryCreateRequestDto)
         {
 
