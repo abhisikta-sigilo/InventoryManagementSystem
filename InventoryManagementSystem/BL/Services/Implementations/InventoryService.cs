@@ -2,17 +2,24 @@
 using InventoryManagementSystem.BL.Services.Abstractions;
 using InventoryManagementSystem.DL.Entities;
 using InventoryManagementSystem.DL.Repositories.Abstractions;
+using InventoryManagementSystem.DL.Repositories.Implementations;
 using InventoryManagementSystem.Shared.DTOs.Inventory;
 
 namespace InventoryManagementSystem.BL.Services.Implementations
 {
     public class InventoryService(
         IInventoryRepository inventoryRepository,
+        IProductRepository productRepository,
         IMapper mapper
     ) : IInventoryService
     {
         public async Task<InventoryResponseDto> CreateInventory(InventoryCreateRequestDto inventoryCreateRequestDto)
         {
+
+            await ValidateInventory(
+                inventoryCreateRequestDto.ProductId,
+                inventoryCreateRequestDto.Quantity);
+
             InventoryEntity inventoryEntity = mapper.Map<InventoryEntity>( inventoryCreateRequestDto );
 
             long inventoryId = await inventoryRepository.CreateInventory(inventoryEntity);
@@ -22,6 +29,22 @@ namespace InventoryManagementSystem.BL.Services.Implementations
             InventoryResponseDto inventoryResponseDto = mapper.Map<InventoryResponseDto>( inventoryEntity );
 
             return inventoryResponseDto;
+        }
+
+        public async Task ValidateInventory(long productId, int quantity)
+        {
+            ProductEntity? productEntity = await productRepository.GetProductById(productId);
+
+            if (productEntity == null)
+                throw new Exception("Product does not exist");
+
+            if (quantity < 0)
+                throw new Exception("Quantity cannot be negative");
+
+            bool inventoryExists = await inventoryRepository.InventoryExistsByProductId(productId);
+
+            if (inventoryExists)
+                throw new Exception("Inventory already exists for this product");
         }
     }
 }

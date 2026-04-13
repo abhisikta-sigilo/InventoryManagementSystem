@@ -19,5 +19,16 @@ namespace InventoryManagementSystem.DL.Repositories.Implementations
 
             return productId;
         }
+
+        public async Task<bool> InventoryExistsByProductId(long productId)
+        {
+            using IDbConnection connection = context.CreateConnection();
+
+            int count = await connection.ExecuteScalarAsync<int>(
+                InventoryQueries.InventoryExistsByProductId,
+                new { ProductId = productId });
+
+            return count > 0;
+        }
     }
 }
