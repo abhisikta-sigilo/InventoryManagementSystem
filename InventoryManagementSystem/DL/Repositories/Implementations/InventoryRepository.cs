@@ -1,0 +1,66 @@
+﻿using Dapper;
+using InventoryManagementSystem.DL.DbContext;
+using InventoryManagementSystem.DL.Entities;
+using InventoryManagementSystem.DL.Repositories.Abstractions;
+using InventoryManagementSystem.DL.SqlQueries;
+using System.Data;
+
+namespace InventoryManagementSystem.DL.Repositories.Implementations
+{
+    public class InventoryRepository(DapperContext context) : IInventoryRepository
+    {
+
+        public async Task<IEnumerable<InventoryEntity>> GetInventories()
+        {
+            using IDbConnection connection = context.CreateConnection();
+
+            IEnumerable<InventoryEntity> inventoryEntities =
+                await connection.QueryAsync<InventoryEntity>(InventoryQueries.GetInventories);
+
+            return inventoryEntities;
+        }
+
+        public async Task<InventoryEntity?> GetInventoryById(long inventoryId)
+        {
+            using IDbConnection connection = context.CreateConnection();
+
+            InventoryEntity? inventoryEntity =
+                await connection.QueryFirstOrDefaultAsync<InventoryEntity>(
+                    InventoryQueries.GetInventoryById,
+                    new { InventoryId = inventoryId });
+
+            return inventoryEntity;
+        }
+
+        public async Task<long> CreateInventory(InventoryEntity inventoryEntity)
+        {
+            using IDbConnection connection = context.CreateConnection();
+
+            long productId = await connection.ExecuteScalarAsync<long>(
+                InventoryQueries.CreateInventory,
+                inventoryEntity);
+
+            return productId;
+        }
+
+        public async Task<bool> InventoryExistsByProductId(long productId)
+        {
+            using IDbConnection connection = context.CreateConnection();
+
+            int count = await connection.ExecuteScalarAsync<int>(
+                InventoryQueries.InventoryExistsByProductId,
+                new { ProductId = productId });
+
+            return count > 0;
+        }
+
+        public async Task UpdateInventory(InventoryEntity inventoryEntity)
+        {
+            using IDbConnection connection = context.CreateConnection();
+
+            await connection.ExecuteAsync(
+                InventoryQueries.UpdateInventory,
+                inventoryEntity);
+        }
+    }
+}

@@ -25,7 +25,7 @@ CREATE TABLE Products (
 
 CREATE TABLE Inventory (
     InventoryId BIGINT IDENTITY(1,1) PRIMARY KEY,
-    ProductId BIGINT NOT NULL,
+    ProductId BIGINT UNIQUE NOT NULL,
     Quantity INT NOT NULL,
 
     CreatedDate DATETIME NOT NULL DEFAULT GETUTCDATE(),
