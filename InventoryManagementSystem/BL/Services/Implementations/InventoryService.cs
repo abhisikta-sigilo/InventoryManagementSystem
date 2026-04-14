@@ -14,9 +14,9 @@ namespace InventoryManagementSystem.BL.Services.Implementations
     {
         public async Task<IEnumerable<InventoryResponseDto>> GetInventories()
         {
-            IEnumerable<InventoryEntity> inventroyEntities = await inventoryRepository.GetInventories();
+            IEnumerable<InventoryEntity> inventoryEntities = await inventoryRepository.GetInventories();
 
-            return mapper.Map<IEnumerable<InventoryResponseDto>>(inventroyEntities);
+            return mapper.Map<IEnumerable<InventoryResponseDto>>(inventoryEntities);
         }
 
         public async Task<InventoryResponseDto> GetInventoryById(long inventoryId)
