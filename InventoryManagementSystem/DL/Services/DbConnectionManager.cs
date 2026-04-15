@@ -5,22 +5,19 @@ namespace InventoryManagementSystem.DL.Services
 {
     public abstract class DbConnectionManager
     {
-        private readonly IConfiguration _configuration;
         private readonly string _connectionString;
-        public DbConnectionManager(IConfiguration configuration)
+        protected DbConnectionManager(IConfiguration configuration)
         {
-            _configuration = configuration;
-
-            _connectionString = _configuration.GetConnectionString("DefaultConnection")
+            _connectionString = configuration.GetConnectionString("DefaultConnection")
                                 ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
         }
 
-        public IDbConnection CreateSqlConnection()
+        protected IDbConnection CreateSqlConnection()
         {
             return new SqlConnection(_connectionString);
         }
 
-        protected async Task<T> ExecuteDatabaseOperation<T>(
+        private async Task<T> ExecuteDatabaseOperation<T>(
         Func<IDbConnection, Task<T>> dbOperation)
         {
             using IDbConnection connection = CreateSqlConnection();
@@ -30,5 +27,30 @@ namespace InventoryManagementSystem.DL.Services
             return await dbOperation(connection);
         }
 
+        protected async Task<T> DbOperation<T>(Func<IDbConnection, Task<T>> dbOperation)
+        {
+            return await ExecuteDatabaseOperation(dbOperation);
+        }
+
+        protected async Task<T> DbOperationInTransaction<T>(
+            Func<IDbConnection, IDbTransaction, Task<T>> dbOperation)
+        {
+            return await ExecuteDatabaseOperation(async connection =>
+            {
+                using IDbTransaction transaction = connection.BeginTransaction();
+                try
+                {
+                    T dbOperationResult = await dbOperation(connection, transaction);
+                    transaction.Commit();
+
+                    return dbOperationResult;
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            });
+        }
     }
 }
