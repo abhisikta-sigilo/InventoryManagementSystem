@@ -13,13 +13,13 @@ namespace InventoryManagementSystem.DL.Repositories.Implementations
 
         public async Task<IEnumerable<InventoryEntity>> GetInventories()
         {
-            return await ExecuteDatabaseOperation(connection =>
+            return await DbOperation(connection =>
                 connection.QueryAsync<InventoryEntity>(InventoryQueries.GetInventories));
         }
 
         public async Task<InventoryEntity?> GetInventoryById(long inventoryId)
         {
-            return await ExecuteDatabaseOperation(connection =>
+            return await DbOperation(connection =>
                 connection.QueryFirstOrDefaultAsync<InventoryEntity>(
                     InventoryQueries.GetInventoryById,
                     new { InventoryId = inventoryId }));
@@ -27,7 +27,7 @@ namespace InventoryManagementSystem.DL.Repositories.Implementations
 
         public async Task<long> CreateInventory(InventoryEntity inventoryEntity)
         {
-            return await ExecuteDatabaseOperation(connection =>
+            return await DbOperation(connection =>
                 connection.ExecuteScalarAsync<long>(
                     InventoryQueries.CreateInventory,
                     inventoryEntity));
@@ -35,7 +35,7 @@ namespace InventoryManagementSystem.DL.Repositories.Implementations
 
         public async Task<bool> InventoryExistsByProductId(long productId)
         {
-            return await ExecuteDatabaseOperation(async connection =>
+            return await DbOperation(async connection =>
             {
                 int count = await connection.ExecuteScalarAsync<int>(
                     InventoryQueries.InventoryExistsByProductId,
@@ -47,7 +47,7 @@ namespace InventoryManagementSystem.DL.Repositories.Implementations
 
         public async Task UpdateInventory(InventoryEntity inventoryEntity)
         {
-            await ExecuteDatabaseOperation(async connection =>
+            await DbOperation(async connection =>
             {
                 await connection.ExecuteAsync(
                     InventoryQueries.UpdateInventory,

@@ -11,13 +11,13 @@ namespace InventoryManagementSystem.DL.Repositories.Implementations
     {
         public async Task<IEnumerable<ProductEntity>> GetProducts()
         {
-            return await ExecuteDatabaseOperation(connection =>
+            return await DbOperation(connection =>
                 connection.QueryAsync<ProductEntity>(ProductQueries.GetProducts));
         }
 
         public async Task<ProductEntity?> GetProductById(long productId)
         {
-            return await ExecuteDatabaseOperation(connection =>
+            return await DbOperation(connection =>
                 connection.QueryFirstOrDefaultAsync<ProductEntity>(
                     ProductQueries.GetProductById,
                     new { ProductId = productId }));
@@ -25,7 +25,7 @@ namespace InventoryManagementSystem.DL.Repositories.Implementations
 
         public async Task<long> CreateProduct(ProductEntity productEntity)
         {
-            return await ExecuteDatabaseOperation(connection =>
+            return await DbOperation(connection =>
                 connection.ExecuteScalarAsync<long>(
                 ProductQueries.CreateProduct,
                 productEntity));

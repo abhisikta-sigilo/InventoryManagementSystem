@@ -11,14 +11,14 @@ namespace InventoryManagementSystem.DL.Repositories.Implementations
     {
         public async Task<IEnumerable<CustomerEntity>> GetCustomers()
         {
-            return await ExecuteDatabaseOperation(connection =>
+            return await DbOperation(connection =>
                 connection.QueryAsync<CustomerEntity>(
                 CustomerQueries.GetCustomers));
         }
 
         public async Task<CustomerEntity?> GetCustomerById(long customerId)
         {
-            return await ExecuteDatabaseOperation(connection =>
+            return await DbOperation(connection =>
                 connection.QueryFirstOrDefaultAsync<CustomerEntity>(
                     CustomerQueries.GetCustomerById,
                     new { CustomerId = customerId }));
@@ -26,7 +26,7 @@ namespace InventoryManagementSystem.DL.Repositories.Implementations
 
         public async Task<long> CreateCustomer(CustomerEntity customer)
         {
-            return await ExecuteDatabaseOperation(connection =>
+            return await DbOperation(connection =>
                 connection.ExecuteScalarAsync<long>(
                     CustomerQueries.CreateCustomer,
                     customer));
@@ -34,7 +34,7 @@ namespace InventoryManagementSystem.DL.Repositories.Implementations
 
         public async Task<bool> UpdateCustomer(CustomerEntity customerEntity)
         {
-            return await ExecuteDatabaseOperation(async connection =>
+            return await DbOperation(async connection =>
             {
                 int rows = await connection.ExecuteAsync(
                     CustomerQueries.UpdateCustomer, customerEntity);
@@ -45,7 +45,7 @@ namespace InventoryManagementSystem.DL.Repositories.Implementations
 
         public async Task<bool> DeleteCustomer(long customerId)
         {
-            return await ExecuteDatabaseOperation(async connection =>
+            return await DbOperation(async connection =>
             {
                 int rows = await connection.ExecuteAsync(
                 CustomerQueries.SoftDeleteCustomer,
