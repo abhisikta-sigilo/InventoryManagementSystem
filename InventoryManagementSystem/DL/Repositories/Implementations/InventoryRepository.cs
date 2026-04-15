@@ -1,66 +1,60 @@
 ﻿using Dapper;
-using InventoryManagementSystem.DL.DbContext;
 using InventoryManagementSystem.DL.Entities;
 using InventoryManagementSystem.DL.Repositories.Abstractions;
+using InventoryManagementSystem.DL.Services;
 using InventoryManagementSystem.DL.SqlQueries;
 using System.Data;
 
 namespace InventoryManagementSystem.DL.Repositories.Implementations
 {
-    public class InventoryRepository(DapperContext context) : IInventoryRepository
+    public class InventoryRepository(IConfiguration configuration
+        ) : DbConnectionManager(configuration), IInventoryRepository
     {
 
         public async Task<IEnumerable<InventoryEntity>> GetInventories()
         {
-            using IDbConnection connection = context.CreateConnection();
-
-            IEnumerable<InventoryEntity> inventoryEntities =
-                await connection.QueryAsync<InventoryEntity>(InventoryQueries.GetInventories);
-
-            return inventoryEntities;
+            return await DbOperation(connection =>
+                connection.QueryAsync<InventoryEntity>(InventoryQueries.GetInventories));
         }
 
         public async Task<InventoryEntity?> GetInventoryById(long inventoryId)
         {
-            using IDbConnection connection = context.CreateConnection();
-
-            InventoryEntity? inventoryEntity =
-                await connection.QueryFirstOrDefaultAsync<InventoryEntity>(
+            return await DbOperation(connection =>
+                connection.QueryFirstOrDefaultAsync<InventoryEntity>(
                     InventoryQueries.GetInventoryById,
-                    new { InventoryId = inventoryId });
-
-            return inventoryEntity;
+                    new { InventoryId = inventoryId }));
         }
 
         public async Task<long> CreateInventory(InventoryEntity inventoryEntity)
         {
-            using IDbConnection connection = context.CreateConnection();
-
-            long productId = await connection.ExecuteScalarAsync<long>(
-                InventoryQueries.CreateInventory,
-                inventoryEntity);
-
-            return productId;
+            return await DbOperation(connection =>
+                connection.ExecuteScalarAsync<long>(
+                    InventoryQueries.CreateInventory,
+                    inventoryEntity));
         }
 
         public async Task<bool> InventoryExistsByProductId(long productId)
         {
-            using IDbConnection connection = context.CreateConnection();
+            return await DbOperation(async connection =>
+            {
+                int count = await connection.ExecuteScalarAsync<int>(
+                    InventoryQueries.InventoryExistsByProductId,
+                    new { ProductId = productId });
 
-            int count = await connection.ExecuteScalarAsync<int>(
-                InventoryQueries.InventoryExistsByProductId,
-                new { ProductId = productId });
-
-            return count > 0;
+                return count > 0;
+            });
         }
 
         public async Task UpdateInventory(InventoryEntity inventoryEntity)
         {
-            using IDbConnection connection = context.CreateConnection();
+            await DbOperation(async connection =>
+            {
+                await connection.ExecuteAsync(
+                    InventoryQueries.UpdateInventory,
+                    inventoryEntity);
 
-            await connection.ExecuteAsync(
-                InventoryQueries.UpdateInventory,
-                inventoryEntity);
+                return true;
+            });
         }
     }
 }

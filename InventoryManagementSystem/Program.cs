@@ -1,6 +1,5 @@
 using InventoryManagementSystem.BL.Services.Abstractions;
 using InventoryManagementSystem.BL.Services.Implementations;
-using InventoryManagementSystem.DL.DbContext;
 using InventoryManagementSystem.DL.Repositories.Abstractions;
 using InventoryManagementSystem.DL.Repositories.Implementations;
 using Microsoft.AspNetCore.Diagnostics;
@@ -13,8 +12,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddSingleton<DapperContext>();
 
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
