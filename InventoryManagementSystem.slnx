@@ -1,3 +1,7 @@
 <Solution>
-  <Project Path="InventoryManagementSystem/InventoryManagementSystem.csproj" />
+  <Project Path="BL/BL.csproj" Id="94461b90-a742-4646-bdae-81ebb0c6ffb0" />
+  <Project Path="DatabaseMigration/DatabaseMigration.csproj" Id="43ba3a9c-9d97-4298-a01c-fad516211d6b" />
+  <Project Path="DL/DL.csproj" Id="5ad47826-a7e3-4687-8dc4-e0f426e7856b" />
+  <Project Path="InventoryManagementSystem/API.csproj" />
+  <Project Path="Shared/Shared.csproj" Id="0e13c44e-60a7-400b-9d6c-3bca66ef96d9" />
 </Solution>

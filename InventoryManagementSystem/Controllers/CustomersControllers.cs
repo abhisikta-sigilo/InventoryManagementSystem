@@ -1,8 +1,8 @@
-﻿using InventoryManagementSystem.BL.Services.Abstractions;
-using InventoryManagementSystem.Shared.DTOs.Customer;
+﻿using BL.Services.Abstractions;
+using Shared.DTOs.Customer;
 using Microsoft.AspNetCore.Mvc;
 
-namespace OrderManagementSystem.Controllers
+namespace InventoryManagementSystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
