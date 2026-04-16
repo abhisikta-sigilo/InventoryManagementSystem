@@ -3,7 +3,7 @@ GO
 
 CREATE TABLE Customers (
     CustomerId BIGINT IDENTITY(1,1) PRIMARY KEY,
-    Name VARCHAR(100) NOT NULL,
+    CustomerName VARCHAR(100) NOT NULL,
     Email VARCHAR(150) NOT NULL,
     Phone VARCHAR(20),
 
