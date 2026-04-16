@@ -8,6 +8,6 @@ namespace BL.Services.Abstractions
 
         Task<ProductResponseDto> GetProductById(long productId);
 
-        Task CreateProduct(ProductCreateRequestDto productCreateRequestDto);
+        Task<ProductResponseDto> CreateProduct(ProductCreateRequestDto productCreateRequestDto);
     }
 }

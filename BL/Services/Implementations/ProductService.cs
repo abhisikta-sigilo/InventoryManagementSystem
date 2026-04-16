@@ -30,11 +30,15 @@ namespace BL.Services.Implementations
             return mapper.Map<ProductResponseDto>(productEntity);
         }
 
-        public async Task CreateProduct(ProductCreateRequestDto productCreateRequestDto)
+        public async Task<ProductResponseDto> CreateProduct(ProductCreateRequestDto productCreateRequestDto)
         {
             ProductEntity productEntity = mapper.Map<ProductEntity>(productCreateRequestDto);
 
-            await productRepository.CreateProduct(productEntity);
+            long productId = await productRepository.CreateProduct(productEntity);
+
+            productEntity.ProductId = productId;
+
+            return mapper.Map<ProductResponseDto>(productEntity);
         }
     }
 }

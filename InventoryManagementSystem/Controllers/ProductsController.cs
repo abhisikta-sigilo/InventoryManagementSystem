@@ -1,6 +1,8 @@
 ﻿using BL.Services.Abstractions;
-using Shared.DTOs.Product;
+using BL.Services.Implementations;
 using Microsoft.AspNetCore.Mvc;
+using Shared.DTOs.Inventory;
+using Shared.DTOs.Product;
 
 namespace InventoryManagementSystem.Controllers
 {
@@ -9,7 +11,7 @@ namespace InventoryManagementSystem.Controllers
     public class ProductsController(IProductService productService) : ControllerBase
     {
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ProductResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType<IEnumerable<ProductResponseDto>>(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
         public async Task<ActionResult<IEnumerable<ProductResponseDto>>> GetProducts() 
@@ -19,7 +21,7 @@ namespace InventoryManagementSystem.Controllers
         }
 
         [HttpGet("{productId}")]
-        [ProducesResponseType(typeof(ProductResponseDto), StatusCodes.Status200OK)]
+        [ProducesResponseType<ProductResponseDto>(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
         public async Task<ActionResult> GetProductById(
@@ -30,14 +32,15 @@ namespace InventoryManagementSystem.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType<ProductResponseDto>(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
         public async Task<ActionResult> CreateProduct(ProductCreateRequestDto productCreateRequestDto)
         {
-            await productService.CreateProduct(productCreateRequestDto);
+            ProductResponseDto productResponseDto =
+                await productService.CreateProduct(productCreateRequestDto);
 
-            return Ok();
+            return Ok(productResponseDto);
         }
     }
 }
