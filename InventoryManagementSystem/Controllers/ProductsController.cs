@@ -1,6 +1,5 @@
-﻿using InventoryManagementSystem.BL.Services.Abstractions;
-using InventoryManagementSystem.Shared.DTOs.Product;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using BL.Services.Abstractions;
+using Shared.DTOs.Product;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryManagementSystem.Controllers

@@ -1,7 +1,8 @@
-using InventoryManagementSystem.BL.Services.Abstractions;
-using InventoryManagementSystem.BL.Services.Implementations;
-using InventoryManagementSystem.DL.Repositories.Abstractions;
-using InventoryManagementSystem.DL.Repositories.Implementations;
+using BL.Services.Abstractions;
+using BL.Services.Implementations;
+using DL.Repositories.Abstractions;
+using DL.Repositories.Implementations;
+
 using Microsoft.AspNetCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
