@@ -45,6 +45,14 @@ namespace DL.Repositories.Implementations
             });
         }
 
+        public async Task<InventoryEntity?> GetInventoryByProductId(long productId)
+        {
+            return await DbOperation(connection =>
+                connection.QueryFirstOrDefaultAsync<InventoryEntity>(
+                    InventoryQueries.GetInventoryByProductId,
+                    new { ProductId = productId }));
+        }
+
         public async Task UpdateInventory(InventoryEntity inventoryEntity)
         {
             await DbOperation(async connection =>
