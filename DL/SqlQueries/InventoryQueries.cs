@@ -25,6 +25,12 @@
             WHERE ProductId = @ProductId
             AND IsDeleted = 0";
 
+        public const string GetInventoryByProductId = @"
+            SELECT InventoryId, ProductId, Quantity
+            FROM Inventory
+            WHERE ProductId = @ProductId
+            AND IsDeleted = 0";
+
         public const string UpdateInventory = @"
             UPDATE Inventory
             SET
@@ -32,6 +38,12 @@
                 Quantity = @Quantity,
                 ModifiedDate = GETUTCDATE()
             WHERE InventoryId = @InventoryId
+            AND IsDeleted = 0";
+
+        public const string DeductStock = @"
+            UPDATE Inventory
+            SET Quantity = Quantity - @Quantity
+            WHERE ProductId = @ProductId
             AND IsDeleted = 0";
     }
 }
