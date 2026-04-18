@@ -23,6 +23,9 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();
 
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+
 builder.Services.AddAutoMapper(
     cfg => { },
     AppDomain.CurrentDomain.GetAssemblies()
