@@ -14,6 +14,14 @@ namespace BL.Services.Implementations
         IMapper mapper
         ) :IOrderService
     {
+        public async Task<IEnumerable<OrderResponseDto>> GetOrders()
+        {
+            IEnumerable<OrderEntity> orderEntities =
+                await orderRepository.GetOrders();
+                
+            return mapper.Map<IEnumerable<OrderResponseDto>>(orderEntities);
+        }
+
         public async Task<OrderResponseDto> CreateOrder(OrderCreateRequestDto orderCreateRequestDto)
         {
             decimal totalAmount = 0;

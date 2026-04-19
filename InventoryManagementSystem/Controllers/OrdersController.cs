@@ -9,6 +9,16 @@ namespace API.Controllers
     [ApiController]
     public class OrdersController(IOrderService orderService) : ControllerBase
     {
+        [HttpGet]
+        [ProducesResponseType<OrderResponseDto>(StatusCodes.Status200OK)]
+
+        public async Task<ActionResult> GetOrders()
+        {
+            IEnumerable<OrderResponseDto> responseDtos = await orderService.GetOrders();
+
+            return Ok(responseDtos);
+        }
+
         [HttpPost]
         [ProducesResponseType<OrderResponseDto>(StatusCodes.Status200OK)]
 

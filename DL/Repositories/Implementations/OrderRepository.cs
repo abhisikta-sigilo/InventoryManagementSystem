@@ -10,6 +10,36 @@ namespace DL.Repositories.Implementations
     public class OrderRepository(IConfiguration configuration
         ) : DbConnectionManager(configuration), IOrderRepository
     {
+        public async Task<IEnumerable<OrderEntity>> GetOrders()
+        {
+            return await DbOperation(async connection =>
+            {
+                Dictionary<long, OrderEntity> orders = new Dictionary<long, OrderEntity>();
+
+                _ = await connection.QueryAsync<OrderEntity, OrderItemEntity, OrderEntity>(
+                    OrderQueries.GetOrders,
+                    (OrderEntity order, OrderItemEntity item) =>
+                    {
+                        if (!orders.ContainsKey(order.OrderId))
+                        {
+                            order.OrderItems = new List<OrderItemEntity>();
+                            orders.Add(order.OrderId, order);
+                        }
+
+                        if (item != null)
+                        {
+                            orders[order.OrderId].OrderItems.Add(item);
+                        }
+
+                        return order;
+                    },
+                    splitOn: "OrderItemId"
+                );
+
+                return orders.Values;
+            });
+        }
+
         //public async Task<long> CreateOrder(OrderEntity orderEntity)
         //{
         //    return await DbOperation(connection =>
