@@ -3,7 +3,7 @@
     public class OrderCreateRequestDto
     {
         public long CustomerId { get; set; }
-        public List<OrderItemCreateRequestDto> Items { get; set; }
+        public List<OrderItemCreateRequestDto> OrderItems { get; set; }
     }
 
     public class OrderItemCreateRequestDto

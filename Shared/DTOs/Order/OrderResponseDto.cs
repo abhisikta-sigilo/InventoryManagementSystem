@@ -12,7 +12,7 @@
 
         public DateTime OrderDate { get; set; }
 
-        public List<OrderItemResponseDto> Items { get; set; }
+        public List<OrderItemResponseDto> OrderItems { get; set; }
     }
 
     public class OrderItemResponseDto

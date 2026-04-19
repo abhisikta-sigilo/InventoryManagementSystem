@@ -19,7 +19,7 @@ namespace BL.Services.Implementations
             decimal totalAmount = 0;
 
             List<OrderItemEntity> orderItemEntities = 
-                mapper.Map<List<OrderItemEntity>>(orderCreateRequestDto.Items);
+                mapper.Map<List<OrderItemEntity>>(orderCreateRequestDto.OrderItems);
 
             foreach (OrderItemEntity item in orderItemEntities)
             {
@@ -59,7 +59,7 @@ namespace BL.Services.Implementations
             OrderResponseDto orderResponseDto =
                 mapper.Map<OrderResponseDto>(orderEntity);
 
-            orderResponseDto.Items =
+            orderResponseDto.OrderItems =
                 mapper.Map<List<OrderItemResponseDto>>(orderItemEntities);
 
             return orderResponseDto;
