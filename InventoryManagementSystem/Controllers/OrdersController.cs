@@ -12,9 +12,10 @@ namespace API.Controllers
         [HttpGet]
         [ProducesResponseType<OrderResponseDto>(StatusCodes.Status200OK)]
 
-        public async Task<ActionResult> GetOrders()
+        public async Task<ActionResult> GetOrders(
+            [FromQuery] OrderFilterRequestDto filter)
         {
-            IEnumerable<OrderResponseDto> responseDtos = await orderService.GetOrders();
+            IEnumerable<OrderResponseDto> responseDtos = await orderService.GetOrders(filter);
 
             return Ok(responseDtos);
         }

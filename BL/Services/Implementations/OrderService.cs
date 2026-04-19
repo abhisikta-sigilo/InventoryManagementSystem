@@ -14,10 +14,13 @@ namespace BL.Services.Implementations
         IMapper mapper
         ) :IOrderService
     {
-        public async Task<IEnumerable<OrderResponseDto>> GetOrders()
+        public async Task<IEnumerable<OrderResponseDto>> GetOrders(
+            OrderFilterRequestDto filter)
         {
-            IEnumerable<OrderEntity> orderEntities =
-                await orderRepository.GetOrders();
+            IEnumerable<OrderEntity> orderEntities = await orderRepository.GetOrders(
+                filter.CustomerId,
+                filter.OrderStatusId,
+                filter.OrderDate);
                 
             return mapper.Map<IEnumerable<OrderResponseDto>>(orderEntities);
         }

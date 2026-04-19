@@ -4,16 +4,41 @@ using DL.Repositories.Abstractions;
 using DL.Services;
 using DL.SqlQueries;
 using Microsoft.Extensions.Configuration;
+using System.Text;
 
 namespace DL.Repositories.Implementations
 {
     public class OrderRepository(IConfiguration configuration
         ) : DbConnectionManager(configuration), IOrderRepository
     {
-        public async Task<IEnumerable<OrderEntity>> GetOrders()
+        public async Task<IEnumerable<OrderEntity>> GetOrders(
+            long? customerId,
+            int? orderStatusId,
+            DateTime? orderDate)
         {
             return await DbOperation(async connection =>
             {
+                StringBuilder sql = new StringBuilder(OrderQueries.GetOrders);
+                DynamicParameters parameters = new DynamicParameters();
+
+                if (customerId.HasValue)
+                {
+                    sql.Append(" AND o.CustomerId = @CustomerId");
+                    parameters.Add("CustomerId", customerId);
+                }
+
+                if (orderStatusId.HasValue)
+                {
+                    sql.Append(" AND o.OrderStatusId = @OrderStatusId");
+                    parameters.Add("OrderStatusId", orderStatusId);
+                }
+
+                if (orderDate.HasValue)
+                {
+                    sql.Append(" AND CAST(o.OrderDate AS DATE) = @OrderDate");
+                    parameters.Add("OrderDate", orderDate.Value.Date);
+                }
+
                 Dictionary<long, OrderEntity> orders = new Dictionary<long, OrderEntity>();
 
                 _ = await connection.QueryAsync<OrderEntity, OrderItemEntity, OrderEntity>(
@@ -26,13 +51,14 @@ namespace DL.Repositories.Implementations
                             orders.Add(order.OrderId, order);
                         }
 
-                        if (item != null)
+                        if (item != null && item.OrderItemId != 0)
                         {
                             orders[order.OrderId].OrderItems.Add(item);
                         }
 
                         return order;
                     },
+                    parameters,
                     splitOn: "OrderItemId"
                 );
 
