@@ -15,7 +15,7 @@ namespace BL.Services.Implementations
         ) :IOrderService
     {
         public async Task<IEnumerable<OrderResponseDto>> GetOrders(
-            OrderFilterRequestDto filter)
+            OrderFilterRequestDto orderFilterRequestDto)
         {
             IEnumerable<OrderEntity> orderEntities = await orderRepository.GetOrders(
                 filter.CustomerId,
