@@ -12,6 +12,8 @@ namespace DL.Repositories.Abstractions
 
         Task<bool> InventoryExistsByProductId(long productId);
 
+        Task<InventoryEntity?> GetInventoryByProductId(long productId);
+
         Task UpdateInventory(InventoryEntity inventoryEntity);
     }
 }
