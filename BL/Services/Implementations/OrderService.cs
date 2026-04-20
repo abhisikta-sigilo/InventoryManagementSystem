@@ -18,9 +18,7 @@ namespace BL.Services.Implementations
             OrderFilterRequestDto orderFilterRequestDto)
         {
             IEnumerable<OrderEntity> orderEntities = await orderRepository.GetOrders(
-                filter.CustomerId,
-                filter.OrderStatusId,
-                filter.OrderDate);
+                orderFilterRequestDto);
                 
             return mapper.Map<IEnumerable<OrderResponseDto>>(orderEntities);
         }
