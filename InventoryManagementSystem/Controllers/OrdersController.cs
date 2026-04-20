@@ -1,5 +1,4 @@
 ﻿using BL.Services.Abstractions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTOs.Order;
 
@@ -10,7 +9,7 @@ namespace API.Controllers
     public class OrdersController(IOrderService orderService) : ControllerBase
     {
         [HttpGet]
-        [ProducesResponseType<OrderResponseDto>(StatusCodes.Status200OK)]
+        [ProducesResponseType<IEnumerable<OrderResponseDto>>(StatusCodes.Status200OK)]
 
         public async Task<ActionResult> GetOrders(
             [FromQuery] OrderFilterRequestDto filter)
