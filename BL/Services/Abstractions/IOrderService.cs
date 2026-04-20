@@ -9,5 +9,7 @@ namespace BL.Services.Abstractions
         Task<OrderResponseDto?> GetOrderById(long orderId);
 
         Task<OrderResponseDto> CreateOrder(OrderCreateRequestDto request);
+
+        Task UpdateOrderStatus(long orderId, int newStatusId);
     }
 }

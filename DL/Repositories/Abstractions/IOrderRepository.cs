@@ -18,5 +18,7 @@ namespace DL.Repositories.Abstractions
         Task<long> CreateOrderWithItems(
             OrderEntity orderEntity,
             IEnumerable<OrderItemEntity> orderItemEntities);
+
+        Task<bool> UpdateOrderStatus(long orderId, int statusId);
     }
 }

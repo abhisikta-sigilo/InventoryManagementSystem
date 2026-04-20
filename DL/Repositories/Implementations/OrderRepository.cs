@@ -127,6 +127,19 @@ namespace DL.Repositories.Implementations
             });
         }
 
+        public async Task<bool> UpdateOrderStatus(long orderId, int statusId)
+        {
+            return await DbOperation(async connection =>
+            {
+                int rowsAffected = await connection.ExecuteAsync(
+                    OrderQueries.UpdateOrderStatus,
+                    new { OrderId = orderId, OrderStatusId = statusId }
+                );
+
+                return rowsAffected > 0;
+            });
+        }
+
         private OrderEntity MapOrderWithItems(
             Dictionary<long, OrderEntity> orders,
             OrderEntity order,
