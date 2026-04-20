@@ -55,6 +55,27 @@ namespace DL.Repositories.Implementations
             });
         }
 
+        public async Task<OrderEntity?> GetOrderById(long orderId)
+        {
+            return await DbOperation(async connection =>
+            {
+                Dictionary<long, OrderEntity> orders = new Dictionary<long, OrderEntity>();
+
+                IEnumerable<OrderEntity> result = await connection.QueryAsync<OrderEntity, OrderItemEntity, OrderEntity>(
+                    OrderQueries.GetOrderById,
+                    (OrderEntity order, OrderItemEntity item) =>
+                    {
+                        return MapOrderWithItems(orders, order, item);
+                    },
+                    new { OrderId = orderId },
+                    splitOn: "OrderItemId"
+                );
+
+                return orders.Values.FirstOrDefault();
+            });
+        }
+
+
         //public async Task<long> CreateOrder(OrderEntity orderEntity)
         //{
         //    return await DbOperation(connection =>

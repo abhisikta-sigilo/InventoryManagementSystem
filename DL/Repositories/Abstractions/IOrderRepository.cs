@@ -9,6 +9,8 @@ namespace DL.Repositories.Abstractions
             int? orderStatusId,
             DateTime? orderDate);
 
+        Task<OrderEntity?> GetOrderById(long orderId);
+
         //Task<long> CreateOrder(OrderEntity orderEntity);
 
         //Task<int> CreateOrderItem(IEnumerable<OrderItemEntity> orderItemEntities);

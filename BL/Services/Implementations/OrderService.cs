@@ -24,6 +24,17 @@ namespace BL.Services.Implementations
                 
             return mapper.Map<IEnumerable<OrderResponseDto>>(orderEntities);
         }
+        public async Task<OrderResponseDto?> GetOrderById(long orderId)
+        {
+            OrderEntity? orderEntity = await orderRepository.GetOrderById(orderId);
+
+            if (orderEntity == null)
+            {
+                throw new KeyNotFoundException("Product not found");
+            }
+
+            return mapper.Map<OrderResponseDto>(orderEntity);
+        }
 
         public async Task<OrderResponseDto> CreateOrder(OrderCreateRequestDto orderCreateRequestDto)
         {
