@@ -40,5 +40,17 @@ namespace API.Controllers
 
             return Ok(orderResponseDto);
         }
+
+        [HttpPut("{id}/status")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+
+        public async Task<IActionResult> UpdateOrderStatus(
+            [FromRoute] long id,
+            [FromBody] OrderStatusUpdateRequestDto request)
+        {
+            await orderService.UpdateOrderStatus(id, request.OrderStatusId);
+
+            return NoContent();
+        }
     }
 }

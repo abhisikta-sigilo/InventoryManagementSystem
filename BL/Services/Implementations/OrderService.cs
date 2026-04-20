@@ -15,12 +15,10 @@ namespace BL.Services.Implementations
         ) :IOrderService
     {
         public async Task<IEnumerable<OrderResponseDto>> GetOrders(
-            OrderFilterRequestDto filter)
+            OrderFilterRequestDto orderFilterRequestDto)
         {
             IEnumerable<OrderEntity> orderEntities = await orderRepository.GetOrders(
-                filter.CustomerId,
-                filter.OrderStatusId,
-                filter.OrderDate);
+                orderFilterRequestDto);
                 
             return mapper.Map<IEnumerable<OrderResponseDto>>(orderEntities);
         }
@@ -85,6 +83,64 @@ namespace BL.Services.Implementations
                 mapper.Map<List<OrderItemResponseDto>>(orderItemEntities);
 
             return orderResponseDto;
+        }
+
+        public async Task UpdateOrderStatus(long orderId, int newStatusId)
+        {
+            OrderEntity? order = await orderRepository.GetOrderById(orderId);
+
+            if (order == null)
+            {
+                throw new KeyNotFoundException("Order not found");
+            }
+
+            OrderStatus currentStatus = (OrderStatus)order.OrderStatusId;
+            OrderStatus newStatus = (OrderStatus)newStatusId;
+
+            ValidateStatusTransition(currentStatus, newStatus);
+
+            bool updated = await orderRepository.UpdateOrderStatus(orderId, newStatusId);
+
+            if (!updated)
+            {
+                throw new Exception("Order status not updated");
+            }
+        }
+
+        private void ValidateStatusTransition(
+            OrderStatus currentStatus,
+            OrderStatus newStatus)
+        {
+            if (!Enum.IsDefined(typeof(OrderStatus), newStatus))
+            {
+                throw new InvalidOperationException("Invalid order status");
+            }
+
+            if (currentStatus == OrderStatus.Delivered ||
+                currentStatus == OrderStatus.Cancelled)
+            {
+                throw new InvalidOperationException("Order cannot be updated after completion (delivered) or cancellation");
+            }
+
+            if (currentStatus == OrderStatus.Pending &&
+                (newStatus == OrderStatus.Confirmed || newStatus == OrderStatus.Cancelled))
+            {
+                return;
+            }
+
+            if (currentStatus == OrderStatus.Confirmed &&
+                newStatus == OrderStatus.Shipped)
+            {
+                return;
+            }
+
+            if (currentStatus == OrderStatus.Shipped &&
+                newStatus == OrderStatus.Delivered)
+            {
+                return;
+            }
+
+            throw new InvalidOperationException("Invalid order status transition");
         }
     }
 }

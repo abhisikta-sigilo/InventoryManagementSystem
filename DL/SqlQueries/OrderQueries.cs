@@ -49,5 +49,11 @@
             INSERT INTO OrderItems (OrderId, ProductId, Quantity, TotalPrice)
             VALUES
             (@OrderId, @ProductId, @Quantity, @TotalPrice)";
+
+        public const string UpdateOrderStatus = @"
+            UPDATE Orders
+            SET OrderStatusId = @OrderStatusId
+            WHERE OrderId = @OrderId
+            AND IsDeleted = 0";
     }
 }

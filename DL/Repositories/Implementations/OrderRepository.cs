@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using DL.Entities;
+using Shared.DTOs.Order;
 using DL.Repositories.Abstractions;
 using DL.Services;
 using DL.SqlQueries;
@@ -12,31 +13,29 @@ namespace DL.Repositories.Implementations
         ) : DbConnectionManager(configuration), IOrderRepository
     {
         public async Task<IEnumerable<OrderEntity>> GetOrders(
-            long? customerId,
-            int? orderStatusId,
-            DateTime? orderDate)
+            OrderFilterRequestDto orderFilterRequestDto)
         {
             return await DbOperation(async connection =>
             {
                 StringBuilder sql = new StringBuilder(OrderQueries.GetOrders);
                 DynamicParameters parameters = new DynamicParameters();
 
-                if (customerId.HasValue)
+                if (orderFilterRequestDto.CustomerId.HasValue)
                 {
                     sql.Append(" AND o.CustomerId = @CustomerId");
-                    parameters.Add("CustomerId", customerId);
+                    parameters.Add("CustomerId", orderFilterRequestDto.CustomerId);
                 }
 
-                if (orderStatusId.HasValue)
+                if (orderFilterRequestDto.OrderStatusId.HasValue)
                 {
                     sql.Append(" AND o.OrderStatusId = @OrderStatusId");
-                    parameters.Add("OrderStatusId", orderStatusId);
+                    parameters.Add("OrderStatusId", orderFilterRequestDto.OrderStatusId);
                 }
 
-                if (orderDate.HasValue)
+                if (orderFilterRequestDto.OrderDate.HasValue)
                 {
                     sql.Append(" AND CAST(o.OrderDate AS DATE) = @OrderDate");
-                    parameters.Add("OrderDate", orderDate.Value.Date);
+                    parameters.Add("OrderDate", orderFilterRequestDto.OrderDate.Value.Date);
                 }
 
                 Dictionary<long, OrderEntity> orders = new Dictionary<long, OrderEntity>();
@@ -124,6 +123,19 @@ namespace DL.Repositories.Implementations
                         transaction);
                 }
                 return orderId;
+            });
+        }
+
+        public async Task<bool> UpdateOrderStatus(long orderId, int statusId)
+        {
+            return await DbOperation(async connection =>
+            {
+                int rowsAffected = await connection.ExecuteAsync(
+                    OrderQueries.UpdateOrderStatus,
+                    new { OrderId = orderId, OrderStatusId = statusId }
+                );
+
+                return rowsAffected > 0;
             });
         }
 
