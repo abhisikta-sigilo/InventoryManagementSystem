@@ -14,12 +14,34 @@ namespace BL.Services.Implementations
         IMapper mapper
         ) :IOrderService
     {
+        public async Task<IEnumerable<OrderResponseDto>> GetOrders(
+            OrderFilterRequestDto filter)
+        {
+            IEnumerable<OrderEntity> orderEntities = await orderRepository.GetOrders(
+                filter.CustomerId,
+                filter.OrderStatusId,
+                filter.OrderDate);
+                
+            return mapper.Map<IEnumerable<OrderResponseDto>>(orderEntities);
+        }
+        public async Task<OrderResponseDto?> GetOrderById(long orderId)
+        {
+            OrderEntity? orderEntity = await orderRepository.GetOrderById(orderId);
+
+            if (orderEntity == null)
+            {
+                throw new KeyNotFoundException("Product not found");
+            }
+
+            return mapper.Map<OrderResponseDto>(orderEntity);
+        }
+
         public async Task<OrderResponseDto> CreateOrder(OrderCreateRequestDto orderCreateRequestDto)
         {
             decimal totalAmount = 0;
 
             List<OrderItemEntity> orderItemEntities = 
-                mapper.Map<List<OrderItemEntity>>(orderCreateRequestDto.Items);
+                mapper.Map<List<OrderItemEntity>>(orderCreateRequestDto.OrderItems);
 
             foreach (OrderItemEntity item in orderItemEntities)
             {
@@ -59,7 +81,7 @@ namespace BL.Services.Implementations
             OrderResponseDto orderResponseDto =
                 mapper.Map<OrderResponseDto>(orderEntity);
 
-            orderResponseDto.Items =
+            orderResponseDto.OrderItems =
                 mapper.Map<List<OrderItemResponseDto>>(orderItemEntities);
 
             return orderResponseDto;

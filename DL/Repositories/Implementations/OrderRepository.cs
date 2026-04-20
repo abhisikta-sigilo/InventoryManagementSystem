@@ -4,12 +4,78 @@ using DL.Repositories.Abstractions;
 using DL.Services;
 using DL.SqlQueries;
 using Microsoft.Extensions.Configuration;
+using System.Text;
 
 namespace DL.Repositories.Implementations
 {
     public class OrderRepository(IConfiguration configuration
         ) : DbConnectionManager(configuration), IOrderRepository
     {
+        public async Task<IEnumerable<OrderEntity>> GetOrders(
+            long? customerId,
+            int? orderStatusId,
+            DateTime? orderDate)
+        {
+            return await DbOperation(async connection =>
+            {
+                StringBuilder sql = new StringBuilder(OrderQueries.GetOrders);
+                DynamicParameters parameters = new DynamicParameters();
+
+                if (customerId.HasValue)
+                {
+                    sql.Append(" AND o.CustomerId = @CustomerId");
+                    parameters.Add("CustomerId", customerId);
+                }
+
+                if (orderStatusId.HasValue)
+                {
+                    sql.Append(" AND o.OrderStatusId = @OrderStatusId");
+                    parameters.Add("OrderStatusId", orderStatusId);
+                }
+
+                if (orderDate.HasValue)
+                {
+                    sql.Append(" AND CAST(o.OrderDate AS DATE) = @OrderDate");
+                    parameters.Add("OrderDate", orderDate.Value.Date);
+                }
+
+                Dictionary<long, OrderEntity> orders = new Dictionary<long, OrderEntity>();
+
+                _ = await connection.QueryAsync<OrderEntity, OrderItemEntity, OrderEntity>(
+                    OrderQueries.GetOrders,
+                    (OrderEntity order, OrderItemEntity item) =>
+                    {
+                        return MapOrderWithItems(orders, order, item);
+                    },
+                    parameters,
+                    splitOn: "OrderItemId"
+                );
+
+                return orders.Values;
+            });
+        }
+
+        public async Task<OrderEntity?> GetOrderById(long orderId)
+        {
+            return await DbOperation(async connection =>
+            {
+                Dictionary<long, OrderEntity> orders = new Dictionary<long, OrderEntity>();
+
+                IEnumerable<OrderEntity> result = await connection.QueryAsync<OrderEntity, OrderItemEntity, OrderEntity>(
+                    OrderQueries.GetOrderById,
+                    (OrderEntity order, OrderItemEntity item) =>
+                    {
+                        return MapOrderWithItems(orders, order, item);
+                    },
+                    new { OrderId = orderId },
+                    splitOn: "OrderItemId"
+                );
+
+                return orders.Values.FirstOrDefault();
+            });
+        }
+
+
         //public async Task<long> CreateOrder(OrderEntity orderEntity)
         //{
         //    return await DbOperation(connection =>
@@ -59,6 +125,25 @@ namespace DL.Repositories.Implementations
                 }
                 return orderId;
             });
+        }
+
+        private OrderEntity MapOrderWithItems(
+            Dictionary<long, OrderEntity> orders,
+            OrderEntity order,
+            OrderItemEntity item)
+        {
+            if (!orders.ContainsKey(order.OrderId))
+            {
+                order.OrderItems = new List<OrderItemEntity>();
+                orders.Add(order.OrderId, order);
+            }
+
+            if (item.OrderItemId != 0)
+            {
+                orders[order.OrderId].OrderItems.Add(item);
+            }
+
+            return order;
         }
     }
 }

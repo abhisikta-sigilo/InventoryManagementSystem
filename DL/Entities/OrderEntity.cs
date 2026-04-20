@@ -11,5 +11,7 @@
         public int OrderStatusId { get; set; }
 
         public DateTime OrderDate { get; set; }
+
+        public List<OrderItemEntity>? OrderItems { get; set; }
     }
 }

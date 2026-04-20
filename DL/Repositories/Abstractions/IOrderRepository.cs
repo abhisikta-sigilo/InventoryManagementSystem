@@ -4,6 +4,13 @@ namespace DL.Repositories.Abstractions
 {
     public interface IOrderRepository
     {
+        Task<IEnumerable<OrderEntity>> GetOrders(
+            long? customerId,
+            int? orderStatusId,
+            DateTime? orderDate);
+
+        Task<OrderEntity?> GetOrderById(long orderId);
+
         //Task<long> CreateOrder(OrderEntity orderEntity);
 
         //Task<int> CreateOrderItem(IEnumerable<OrderItemEntity> orderItemEntities);
