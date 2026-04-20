@@ -45,18 +45,7 @@ namespace DL.Repositories.Implementations
                     OrderQueries.GetOrders,
                     (OrderEntity order, OrderItemEntity item) =>
                     {
-                        if (!orders.ContainsKey(order.OrderId))
-                        {
-                            order.OrderItems = new List<OrderItemEntity>();
-                            orders.Add(order.OrderId, order);
-                        }
-
-                        if (item != null && item.OrderItemId != 0)
-                        {
-                            orders[order.OrderId].OrderItems.Add(item);
-                        }
-
-                        return order;
+                        return MapOrderWithItems(orders, order, item);
                     },
                     parameters,
                     splitOn: "OrderItemId"
@@ -115,6 +104,25 @@ namespace DL.Repositories.Implementations
                 }
                 return orderId;
             });
+        }
+
+        private OrderEntity MapOrderWithItems(
+            Dictionary<long, OrderEntity> orders,
+            OrderEntity order,
+            OrderItemEntity item)
+        {
+            if (!orders.ContainsKey(order.OrderId))
+            {
+                order.OrderItems = new List<OrderItemEntity>();
+                orders.Add(order.OrderId, order);
+            }
+
+            if (item.OrderItemId != 0)
+            {
+                orders[order.OrderId].OrderItems.Add(item);
+            }
+
+            return order;
         }
     }
 }
